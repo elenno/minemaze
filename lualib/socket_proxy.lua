@@ -1,4 +1,5 @@
 local skynet = require "skynet"
+local log = require "log"
 
 local proxyd
 
@@ -23,6 +24,10 @@ skynet.register_protocol {
 }
 
 local function get_addr(fd)
+	if (map[fd] == nil) then
+		log("map[fd=%d] dit not subscribe, return empty string")
+		return ''
+	end
 	return assert(map[fd], "subscribe first")
 end
 
@@ -49,7 +54,9 @@ function proxy.write(fd, msg, sz)
 end
 
 function proxy.close(fd)
+	log("proxy.close")
 	skynet.send(get_addr(fd), "text", "K")
+	log("skynet send K")
 end
 
 function proxy.info(fd)

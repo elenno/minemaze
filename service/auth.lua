@@ -31,6 +31,11 @@ function cli:signin(args)
 	end
 end
 
+function cli:test(args)
+	log("test args %d %d %s %d", args.param1, args.param2, args.param3, args.param4)
+	return SUCC
+end
+
 function cli:ping()
 	log("ping")
 end

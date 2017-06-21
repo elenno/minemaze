@@ -8,7 +8,9 @@ local data = {}
 local cli = client.handler()
 
 function cli:ping()
-	assert(self.login)
+	if not self.login then
+		log("ping() not login yet")
+	end
 	log "ping"
 end
 
@@ -29,6 +31,7 @@ local function new_user(fd)
 	local ok, error = pcall(client.dispatch , { fd = fd })
 	log("fd=%d is gone. error = %s", fd, error)
 	client.close(fd)
+	log("new user close !!!!!!!")
 	if data.fd == fd then
 		data.fd = nil
 		skynet.sleep(1000)	-- exit after 10s

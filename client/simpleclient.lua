@@ -23,6 +23,7 @@ end
 
 function event:ping()
 	print("ping")
+	--message.request "ping"
 end
 
 function event:signin(req, resp)
@@ -58,7 +59,13 @@ function event:push(args)
 	print("server push", args.text)
 end
 
+function event:test(req, resp)
+	print("resp test args= %d %d %s %d", resp.param1, resp.param2, resp.param3, resp.param4)
+	print("req test args= %d %d %s %d", req.param1, req.param2, req.param3, req.param4)
+end
+
 message.request("signin", { userid = "alice" })
+message.request("test", { param1 = 1, param2 = 2, param3 = "test123", param4 = 3})
 
 while true do
 	message.update()

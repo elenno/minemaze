@@ -30,3 +30,14 @@ login 4 {
 	}
 }
 
+test 5 {
+	request {
+		param1 0 : integer
+		param2 1 : integer
+		param3 2 : string
+		param4 3 : integer
+	}
+	response {
+		ok 0 : boolean
+	}
+}

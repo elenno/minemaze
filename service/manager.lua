@@ -34,6 +34,8 @@ function manager.assign(fd, userid)
 end
 
 function manager.exit(userid)
+	agent = users[userid]
+	log("manager.exit userid:%s  agent:[%s]", userid, agent)
 	users[userid] = nil
 end
 
