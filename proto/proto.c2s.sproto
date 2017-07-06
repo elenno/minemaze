@@ -41,3 +41,22 @@ test 5 {
 		ok 0 : boolean
 	}
 }
+
+upload_maze 6 {
+	request {
+		maze_name 0 : string
+		maze_height 1 : integer
+		maze_width 2 : integer
+		maze_map 3 : string
+		start_pos_x 4 : integer
+		start_pos_y 5 : integer
+		end_pos_x 6 : integer
+		end_pos_y 7 : integer
+		head_line 8 : string
+		head_line_remark 9 : string
+		maze_setting_flag 10 : integer
+	}
+	response {
+		ok 0 : boolean
+	}
+}
