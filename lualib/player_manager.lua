@@ -34,7 +34,7 @@ function player_manager.get_player(player_id)
 			player_map[player_id] = player
 		else
 			--todo 暂时填简单的数据
-			player_tmp = {}
+			local player_tmp = {}
 			player_tmp.player_id = player_id
 			player_tmp.player_name = "测试账号"
 			player_tmp.last_login_time = 0

@@ -45,4 +45,10 @@ function mongo_manager.ensure_index(collection, index)
 	db[db_name][collection]:ensureIndex(index, {})
 end
 
+function mongo_manager.get_data_count(collection, query)
+	local db = mongo_manager.get_mongo_client()
+	local ret = db[db_name][collection]:find(query, {})
+	return ret:count()
+end
+
 return mongo_manager
