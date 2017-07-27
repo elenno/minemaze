@@ -60,3 +60,23 @@ upload_maze 6 {
 		ok 0 : boolean
 	}
 }
+
+start_challenge 7 {
+	request {
+		maze_type 0 : integer
+		maze_id 1 : integer
+	}
+	response {
+		ok 0 : boolean
+	}
+}
+
+finish_challenge 8 {
+	request {
+		maze_type 0 : integer
+		maze_id 1 : integer
+	}
+	response {
+		ok 0 : boolean
+	}
+}

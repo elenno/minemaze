@@ -1,10 +1,10 @@
-local player_manager = require("player_manager")
 local custom_maze_manager = {}
 local custom_maze_map = {}
 local mongo_manager = require("mongo_manager")
 local maze_info_map = {}
 local client = require "client"
 local cli = client.handler()
+local service = require "service"
 
 function custom_maze_manager.get_player_custom_maze(player_id) 
 	if not custom_maze_map[player_id] then 
@@ -34,6 +34,7 @@ function custom_maze_manager.get_maze_info(maze_id)
 			maze_info_map[maze_id] = maze_info
 		else
 			return nil
+		end
 	end
 
 	return maze_info_map[maze_id]
@@ -91,7 +92,12 @@ function cli:upload_maze(args)
 	maze_info.head_line_remark = args.head_line_remark
 	maze_info.maze_setting_flag = args.maze_setting_flag
 
-	custom_maze_manager.create_custom_maze(TEST_PLAYER_ID, maze_info)
+	--custom_maze_manager.create_custom_maze(TEST_PLAYER_ID, maze_info)
+
+	return { ok = true }
 end
 
-return custom_maze_manager
+service.init {
+	command = custom_maze_manager,
+	info = custom_maze_map,
+}

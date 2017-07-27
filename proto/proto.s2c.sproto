@@ -9,3 +9,13 @@ push 1 {
 		text 0 : string
 	}
 }
+
+player_info 2 {
+	request {
+		player_name 0 : string
+		story_record 1 : integer
+		challenging_maze_type 2 : integer
+		challenging_maze_id 3 : integer
+		face_direction 4 : integer
+	}
+}

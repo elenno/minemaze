@@ -64,8 +64,27 @@ function event:test(req, resp)
 	print("req test args= %d %d %s %d", req.param1, req.param2, req.param3, req.param4)
 end
 
+function event:upload_maze(req, resp)
+	print("upload maze")
+end
+
 message.request("signin", { userid = "alice" })
 message.request("test", { param1 = 1, param2 = 2, param3 = "test123", param4 = 3})
+--[[
+	message.request("upload_maze", {
+	maze_name = "test_name",
+		maze_height = 4,
+		maze_width = 4,
+		maze_map = "0000111100001111",
+		start_pos_x = 0,
+		start_pos_y = 0,
+		end_pos_x = 1,
+		end_pos_y = 1,
+		head_line = "this is headline",
+		head_line_remark = "this is remark",
+		maze_setting_flag = 0
+})
+--]]
 
 while true do
 	message.update()

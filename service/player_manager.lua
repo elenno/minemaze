@@ -2,22 +2,21 @@ local skynet = require "skynet"
 local service = require "service"
 local client = require "client"
 local log = require "log"
-local Player = require "player"
 local mongo_manager = require "mongo_manager"
 local cli = client.handler()
-
-TEST_PLAYER_ID = 1  --todo 测试用player_id
 
 local player_map = {}
 local player_manager = {}
 
 function player_manager.on_login(player_id) 
+	log("player_manager on_login   player_id:%d", player_id)
 	local player = player_manager.get_player(player_id)
 	player.last_login_time = os.time()
 	player_manager.save_player(player_id, player)
 	--记录当前登录时间
 	--下发相关数据（关卡等信息）
 	
+	return player
 end
 
 function player_manager.on_logout(player_id) 
@@ -39,6 +38,10 @@ function player_manager.get_player(player_id)
 			player_tmp.player_name = "测试账号"
 			player_tmp.last_login_time = 0
 			player_tmp.last_logout_time = 0
+			player_tmp.story_record = 0 -- 用位运算，去表示7个故事关卡的完成情况
+			player_tmp.challenging_maze_type = -1 -- 正在挑战的迷宫类型
+			player_tmp.challenging_maze_id = -1 -- 正在挑战的迷宫id
+			player_tmp.face_direction = 0 -- 朝向（ 0 1 2 3 ）
 			player_map[player_id] = player_tmp
 		end
 		
@@ -54,4 +57,11 @@ function player_manager.save_player(player_id, player)
 	mongo_manager.save_data("player", {player_id = player_id}, player)
 end
 
-return player_manager
+function player_manager.send_player_info(player_id, player)
+	
+end
+
+service.init {
+	command = player_manager,
+	info = player_map,
+}

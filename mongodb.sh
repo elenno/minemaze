@@ -3,12 +3,16 @@
 #chkconfig: 2345 80 90
 #description: mongodb
 start() {
-  mongod -f mongodb.conf
-  # in macosx:   use admin;  db.shotdownServer();
+  sudo mongod -f mongodb.conf
 }
 
 stop() {
-  mongod -f mongodb.conf --shutdown
+  sudo mongod -f mongodb.conf --shutdown
+  # in macosx:   use admin;  db.shotdownServer();
+}
+
+repair() {
+  sudo mongod --repair --dbpath /data/db --repairpath /data/repair
 }
 
 case "$1" in

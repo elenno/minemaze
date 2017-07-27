@@ -2,12 +2,12 @@ local skynet = require "skynet"
 local service = require "service"
 local client = require "client"
 local log = require "log"
-local player_manager = require "player_manager"
-local custom_maze_manager = require "game/custom_maze_manager"
 
 local agent = {}
 local data = {}
 local cli = client.handler()
+
+TEST_PLAYER_ID = 1  --todo 测试用player_id
 
 function cli:ping()
 	if not self.login then
@@ -27,11 +27,26 @@ function cli:login()
 	log("login succ %s fd=%d", data.userid, self.fd)
 	client.push(self, "push", { text = "welcome" })	-- push message to client
 
-	player_manager.on_login(TEST_PLAYER_ID)
+	--local player_manager = skynet.uniqueservice "player_manager"
+	local player_info = skynet.call(service.player_manager, "lua", "on_login", TEST_PLAYER_ID)
+
+	log("player_info  name:%s ", player_info.player_name)
+	--todo push 
+	if player_info then
+		client.push(self, "player_info", {
+			player_name = player_info.player_name or "",
+		story_record = player_info.story_record or 0,
+		challenging_maze_type = player_info.challenging_maze_type or 0,
+		challenging_maze_id = player_info.challenging_maze_id or 0,
+		face_direction = player_info.face_direction or 0
+		})
+	end
+
+	--player_manager.on_login(TEST_PLAYER_ID)
 
 	--TODO test
-	math.randomseed(os.time())
-	custom_maze_manager.add_custom_maze(TEST_PLAYER_ID, math.random(1000))
+	--math.randomseed(os.time())
+	--custom_maze_manager.add_custom_maze(TEST_PLAYER_ID, math.random(1000))
 
 	return { ok = true }
 end
@@ -39,7 +54,6 @@ end
 local function new_user(fd)
 	local ok, error = pcall(client.dispatch , { fd = fd })
 	log("fd=%d is gone. error = %s", fd, error)
-	player_manager.on_logout(TEST_PLAYER_ID)
 	client.close(fd)
 	log("new user close !!!!!!!")
 	if data.fd == fd then
@@ -74,6 +88,7 @@ service.init {
 	info = data,
 	require = {
 		"manager",
+		"player_manager"
 	},
 	init = client.init "proto",
 }

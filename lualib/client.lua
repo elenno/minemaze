@@ -39,6 +39,8 @@ function client.dispatch( c )
 			-- unsupported command, disconnected
 			error ("Invalid command " .. name)
 		end
+
+		--todo update (5s or 10s one time is ok)
 	end
 end
 

@@ -2,9 +2,6 @@ local skynet = require "skynet"
 local service = require "service"
 local client = require "client"
 local log = require "log"
-local mongo_manager = require "mongo_manager"
-local player_manager = require "player_manager"
-local custom_maze_manager = require "game/custom_maze_manager"
 
 local auth = {}
 local users = {}
@@ -39,20 +36,6 @@ function cli:test(args)
 	--local data = {player_id = 1, player_name = "test123"}
 	--local key = {player_id = 1}
 	--mongo_manager.save_data("player", key, data)
-	local player = player_manager.get_player(TEST_PLAYER_ID)
-	for k,v in pairs(player) do
-    	print(k,v)
-	end
-
-	local custom_maze = custom_maze_manager.get_player_custom_maze(TEST_PLAYER_ID)
-	for k,v in pairs(custom_maze) do
-    	print(k,v)
-		if "table" == type(v) then
-			for kk, vv in pairs(v) do
-				print(kk, vv)
-			end
-		end
-	end
 
 	return SUCC
 end

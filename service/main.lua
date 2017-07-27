@@ -5,6 +5,10 @@ skynet.start(function()
 	if not skynet.getenv "daemon" then
 		local console = skynet.newservice("console")
 	end
+
+	skynet.uniqueservice ("player_manager")
+	skynet.uniqueservice ("custom_maze_manager")
+
 	skynet.newservice("debug_console",8000)
 	local proto = skynet.uniqueservice "protoloader"
 	skynet.call(proto, "lua", "load", {
