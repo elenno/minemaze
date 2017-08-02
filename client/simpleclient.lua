@@ -64,8 +64,12 @@ function event:test(req, resp)
 	print("req test args= %d %d %s %d", req.param1, req.param2, req.param3, req.param4)
 end
 
-function event:upload_maze(req, resp)
+function event:upload_maze(args)
 	print("upload maze")
+end
+
+function event:player_info(args)
+	print("player_info %s", args.player_name)
 end
 
 message.request("signin", { userid = "alice" })

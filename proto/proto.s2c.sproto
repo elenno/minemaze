@@ -12,10 +12,13 @@ push 1 {
 
 player_info 2 {
 	request {
-		player_name 0 : string
-		story_record 1 : integer
-		challenging_maze_type 2 : integer
-		challenging_maze_id 3 : integer
-		face_direction 4 : integer
+		player_id 0 : integer
+		player_name 1 : string
+		story_record 2 : integer
+		challenging_maze_type 3 : integer
+		challenging_maze_id 4 : integer
+		face_direction 5 : integer
+		cur_pos_x 6 : integer
+		cur_pos_y 7 : integer
 	}
 }

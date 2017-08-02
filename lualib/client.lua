@@ -2,6 +2,7 @@ local skynet = require "skynet"
 local proxy = require "socket_proxy"
 local sprotoloader = require "sprotoloader"
 local log = require "log"
+local service = require "service"
 
 local client = {}
 local host
@@ -15,6 +16,8 @@ end
 function client.dispatch( c )
 	local fd = c.fd
 	proxy.subscribe(fd)
+	local manager_service = skynet.uniqueservice "manager"
+	skynet.call(manager_service, "lua", "bind_client", fd, self)
 	local ERROR = {}
 	while true do
 		local msg, sz = proxy.read(fd)
@@ -26,6 +29,7 @@ function client.dispatch( c )
 		local f = handler[name]
 		if f then
 			-- f may block , so fork and run
+			-- todo  这里不一定要fork  可能会出现后面的请求比前面的请求更早被处理
 			skynet.fork(function()
 				local ok, result = pcall(f, c, args)
 				if ok then
@@ -46,6 +50,7 @@ end
 
 function client.close(fd)
 	proxy.close(fd)
+	skynet.call(service.manager, "lua", "unbind_client", fd, self)
 end
 
 function client.push(c, t, data)

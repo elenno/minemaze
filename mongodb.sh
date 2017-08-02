@@ -26,6 +26,9 @@ case "$1" in
  stop
  start
  ;;
+  repair)
+ repair
+ ;;
   *)
  echo $"Usage: $0 {start|stop|restart}"
  exit 1

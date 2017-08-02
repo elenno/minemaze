@@ -4,6 +4,7 @@ local log = require "log"
 
 local manager = {}
 local users = {}
+local client_map = {}
 
 local function new_agent()
 	-- todo: use a pool
@@ -37,6 +38,32 @@ function manager.exit(userid)
 	agent = users[userid]
 	log("manager.exit userid:%s  agent:[%s]", userid, agent)
 	users[userid] = nil
+end
+
+function manager.bind_client(fd, client)
+	log("manager.bind_client fd:%d client:%s", fd, client)
+
+	client_map[fd] = client
+end
+
+function manager.unbind_client(fd)
+	client_map[fd] = nil
+end
+
+function manager.push_proto(fd, t, data)
+	log("manager.push_proto fd:%d", fd)
+
+	if -1 == fd then
+		return
+	end
+
+	if not client_map[fd] then
+		return
+	end
+
+	log("manager.push_proto client.push fd:%d", fd)
+	local client = client_map[fd]
+	client.push(client, t, data)
 end
 
 service.init {

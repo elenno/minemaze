@@ -8,6 +8,7 @@ skynet.start(function()
 
 	skynet.uniqueservice ("player_manager")
 	skynet.uniqueservice ("custom_maze_manager")
+	--skynet.uniqueservice ("manager")
 
 	skynet.newservice("debug_console",8000)
 	local proto = skynet.uniqueservice "protoloader"
