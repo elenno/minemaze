@@ -69,7 +69,7 @@ function event:upload_maze(args)
 end
 
 function event:player_info(args)
-	print("player_info %s", args.player_name)
+	print("player_info 111" .. args.player_name)
 end
 
 message.request("signin", { userid = "alice" })

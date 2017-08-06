@@ -17,7 +17,7 @@ function client.dispatch( c )
 	local fd = c.fd
 	proxy.subscribe(fd)
 	local manager_service = skynet.uniqueservice "manager"
-	skynet.call(manager_service, "lua", "bind_client", fd, self)
+	skynet.call(manager_service, "lua", "bind_client", fd)
 	local ERROR = {}
 	while true do
 		local msg, sz = proxy.read(fd)
@@ -50,7 +50,7 @@ end
 
 function client.close(fd)
 	proxy.close(fd)
-	skynet.call(service.manager, "lua", "unbind_client", fd, self)
+	skynet.call(service.manager, "lua", "unbind_client", fd)
 end
 
 function client.push(c, t, data)

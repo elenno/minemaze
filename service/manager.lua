@@ -5,6 +5,21 @@ local log = require "log"
 local manager = {}
 local users = {}
 local client_map = {}
+local proxy = require "socket_proxy"
+local sprotoloader = require "sprotoloader"
+
+local host
+local sender
+local is_init = false
+
+function manager.init_manager(name)
+	local protoloader = skynet.uniqueservice "protoloader"
+	local slot = skynet.call(protoloader, "lua", "index", name .. ".c2s")
+	host = sprotoloader.load(slot):host "package"
+	local slot2 = skynet.call(protoloader, "lua", "index", name .. ".s2c")
+	sender = host:attach(sprotoloader.load(slot2))
+	log("BBBBBBBBBBBBBBBBBBBB")
+end
 
 local function new_agent()
 	-- todo: use a pool
@@ -40,30 +55,23 @@ function manager.exit(userid)
 	users[userid] = nil
 end
 
-function manager.bind_client(fd, client)
-	log("manager.bind_client fd:%d client:%s", fd, client)
+function manager.push_proto(fd, t, data)
+	if is_init == false then
+		manager.init_manager("proto")
+		is_init = true
+	end
 
-	client_map[fd] = client
+	log("manager.push_proto fd:%d", fd)
+
+	proxy.write(fd, sender(t, data))
+end
+
+function manager.bind_client(fd)
+	proxy.subscribe(fd)
 end
 
 function manager.unbind_client(fd)
-	client_map[fd] = nil
-end
-
-function manager.push_proto(fd, t, data)
-	log("manager.push_proto fd:%d", fd)
-
-	if -1 == fd then
-		return
-	end
-
-	if not client_map[fd] then
-		return
-	end
-
-	log("manager.push_proto client.push fd:%d", fd)
-	local client = client_map[fd]
-	client.push(client, t, data)
+	proxy.close(fd)
 end
 
 service.init {

@@ -59,7 +59,7 @@ end
 function player_manager.save_player(player_id, player)
 	player_map[player_id] = player
 
-	--todo 写到数据库里
+	--写到数据库里
 	mongo_manager.save_data("player", {player_id = player_id}, player)
 end
 
