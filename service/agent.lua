@@ -2,6 +2,11 @@ local skynet = require "skynet"
 local service = require "service"
 local client = require "client"
 local log = require "log"
+local protobuf = require "protobuf"
+
+local pb_files = {
+    "./proto/test.pb",
+}
 
 local agent = {}
 local data = {}
@@ -17,6 +22,20 @@ function cli:ping()
 end
 
 function cli:login()
+
+	--for _,v in ipairs(pb_files) do
+    --    protobuf.register_file(v)
+    --end
+
+	--protobuf.register_file "./proto/Person.pb"
+
+	--local msg = {name = "linlin"}
+    --log("encode proto!!!!!!!!")
+    --local data = protobuf.encode("Person", msg)
+    --log("decode proto")
+    --local de_msg = protobuf.decode("Person", data)
+    --log(de_msg.name)	
+
 	assert(not self.login)
 	if data.fd then
 		log("login fail %s fd=%d", data.userid, self.fd)

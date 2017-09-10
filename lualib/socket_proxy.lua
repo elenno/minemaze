@@ -50,6 +50,7 @@ function proxy.read(fd)
 end
 
 function proxy.write(fd, msg, sz)
+	log("proxy.write msg: " .. msg)
 	skynet.send(get_addr(fd), "client", msg, sz)
 end
 
