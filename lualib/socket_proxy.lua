@@ -1,5 +1,6 @@
 local skynet = require "skynet"
 local log = require "log"
+local utils = require "utils"
 
 local proxyd
 
@@ -15,6 +16,7 @@ skynet.register_protocol {
 	id = skynet.PTYPE_TEXT,
 	pack = function(text) return text end,
 	unpack = function(buf, sz) return skynet.tostring(buf,sz) end,
+	--unpack = function(buf, sz) return buf, sz end,
 }
 
 skynet.register_protocol {
@@ -42,6 +44,7 @@ end
 function proxy.read(fd)
 	local ok,msg,sz = pcall(skynet.rawcall , get_addr(fd), "text", "R")
 	if ok then
+		utils.print("sz=" .. sz)
 		return msg,sz
 	else
 		map[fd] = nil
@@ -50,7 +53,8 @@ function proxy.read(fd)
 end
 
 function proxy.write(fd, msg, sz)
-	log("proxy.write msg: " .. msg)
+	--log("proxy.write msg: " .. msg)
+	utils.print("proxy.write = " .. msg .. " len = " .. sz)
 	skynet.send(get_addr(fd), "client", msg, sz)
 end
 

@@ -6,11 +6,14 @@ local log = require "log"
 local auth = {}
 local users = {}
 local cli = client.handler()
+local retcode = require "retcode"
+local utils = require "utils"
 
 local SUCC = { ok = true }
 local FAIL = { ok = false }
 
 function cli:signup(args)
+	utils.print(args);
 	log("signup userid = %s", args.userid)
 	if users[args.userid] then
 		return FAIL
@@ -20,15 +23,15 @@ function cli:signup(args)
 	end
 end
 
-function cli:signin(args)
-	log("signin userid = %s", args.userid)
-	if users[args.userid] then
-		self.userid = args.userid
+function cli:CSSignin(args)
+	log("signin name = %s", args.name)
+	--if users[args.name] then
+		self.userid = args.name
 		self.exit = true
-		return SUCC
-	else
-		return FAIL
-	end
+		return 0, "SCSignin", { ok = 1, name = args.name}
+	--else
+	--	return 0, "SCError", { errorcode=retcode.UNKNOWN_ERROR, errormsg="unknown error" }
+	--end
 end
 
 function cli:test(args)

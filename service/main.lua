@@ -11,11 +11,10 @@ skynet.start(function()
 	--skynet.uniqueservice ("manager")
 
 	skynet.newservice("debug_console",8000)
-	local proto = skynet.uniqueservice "protoloader"
-	skynet.call(proto, "lua", "load", {
-		"proto.c2s",
-		"proto.s2c",
-	})
+
+	--local proto = skynet.uniqueservice "pbc"
+	--skynet.call(proto, "lua", "init", {})
+
 	local hub = skynet.uniqueservice "hub"
 	skynet.call(hub, "lua", "open", "0.0.0.0", 5678)
 	skynet.exit()

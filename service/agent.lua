@@ -5,7 +5,8 @@ local log = require "log"
 local protobuf = require "protobuf"
 
 local pb_files = {
-    "./proto/test.pb",
+    "./proto/Person.pb",
+	"./proto/pbhead.pb",
 }
 
 local agent = {}

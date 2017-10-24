@@ -53,6 +53,7 @@ end)
 
 skynet.start(function()
 	skynet.dispatch("text", function (session, source, cmd)
+		--skynet.error("cmd=" .. cmd .. "  ss=" .. skynet.tostring(socket_init[source]))
 		if cmd == "CLOSED" then
 			close_agent(source)
 		elseif cmd == "SUCC" then
