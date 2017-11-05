@@ -68,7 +68,7 @@ function client.push(c, t, data)
 end
 
 function client.init(name)
-	return function ()
+		log("client.init pbc")
 		pbc = skynet.uniqueservice("pbc")
     	protopack.pbc = pbc
 		-- local protoloader = skynet.uniqueservice "protoloader"
@@ -76,7 +76,6 @@ function client.init(name)
 		-- host = sprotoloader.load(slot):host "package"
 		-- local slot2 = skynet.call(protoloader, "lua", "index", name .. ".s2c")
 		-- sender = host:attach(sprotoloader.load(slot2))
-	end
 end
 
 return client

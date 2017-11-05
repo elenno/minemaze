@@ -7,6 +7,8 @@ local ret_arr = {
     --登录
     LOGIN_GUEST_REGISTER_FAIL = 201,                --游客用户创建失败
     LOGIN_PLATFORM_ERROR = 202,                     --平台编号错误
+    LOGIN_GUEST_MUST_SIGNUP_FIRST = 203,            --游客需要先注册
+    USER_NAME_ALREADY_BEEN_REGISTERED = 204,        --用户名已被注册
     
     --创建房间
     ROOM_CREATE_FAIL = 211,                         --创建房间失败

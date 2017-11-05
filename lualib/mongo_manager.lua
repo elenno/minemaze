@@ -40,6 +40,16 @@ function mongo_manager.get_data(collection, query)
 	end
 end
 
+function mongo_manager.get_all_data(collection, query, field_selector)
+	local db = mongo_manager.get_mongo_client()
+	local ret = db[db_name][collection]:find(query, field_selector)
+	if ret then
+		return ret
+	else
+		return nil
+	end
+end
+
 function mongo_manager.ensure_index(collection, index)
 	local db = mongo_manager.get_mongo_client()
 	db[db_name][collection]:ensureIndex(index, {})

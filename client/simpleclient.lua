@@ -7,18 +7,25 @@ package.cpath = string.format("%s/skynet/luaclib/?.so;%s/lsocket/?.so", PATH, PA
 
 local socket = require "simplesocket"
 local message = require "simplemessage"
+local retcode = require "retcode"
 
 message.register()
 
 message.peer(IP, 5678)
 message.connect()
 
+print("IP = " .. IP)
+
 local event = {}
 
 message.bind({}, event)
 
 function event:SCError(args)
-	print("error", args.what, args.err)
+	print("error", args.errorcode, args.errormsg)
+
+	if args.errorcode == retcode.LOGIN_GUEST_MUST_SIGNUP_FIRST then
+		message.request("CSSignup", { name = "alice" })
+	end
 end
 
 function event:ping()
@@ -28,6 +35,7 @@ end
 
 function event:SCSignin(resp)
 	print("signin!!!", resp.name, resp.ok)
+	
 	-- if resp.ok then
 	-- 	message.request "ping"	-- should error before login
 	-- 	message.request "login"
@@ -35,6 +43,12 @@ function event:SCSignin(resp)
 	-- 	-- signin failed, signup
 	-- 	message.request("signup", { userid = "alice" })
 	-- end
+end
+
+function event:SCSignup(resp)
+	print("signup!!!, then signin", resp.name, resp.ok)
+
+	message.request("CSSignin", { name = "alice" })
 end
 
 function event:signup(resp)

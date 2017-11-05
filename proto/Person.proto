@@ -12,6 +12,15 @@ required string name = 2;
 }
 
 message SCError {
-required string errorcode = 1;
-required string errmsg = 2;
+required int32 errorcode = 1;
+required string errormsg = 2;
+}
+
+message CSSignup {
+required string name = 1;
+}
+
+message SCSignup {
+required int32 ok = 1;
+required string name = 2;
 }

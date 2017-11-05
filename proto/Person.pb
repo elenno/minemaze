@@ -1,5 +1,5 @@
 
-”
+Ö
 Person.proto"
 Person
 name (	"
@@ -8,7 +8,13 @@
 SCSignin
 
 ok (
-name (	",
+name (	".
 SCError
-	errorcode (	
-errmsg (	
+	errorcode (
+errormsg (	"
+CSSignup
+name (	"$
+SCSignup
+
+ok (
+name (	
