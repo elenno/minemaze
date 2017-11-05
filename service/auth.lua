@@ -9,6 +9,7 @@ local users = {}
 local cli = client.handler()
 local retcode = require "retcode"
 local utils = require "utils"
+local CUR_PLAYER_ID = 0
 
 local SUCC = { ok = true }
 local FAIL = { ok = false }
@@ -21,6 +22,12 @@ function cli:CSSignup(args)
 		return 0, "SCError", { errorcode = retcode.USER_NAME_ALREADY_BEEN_REGISTERED, errormsg="USER_NAME_ALREADY_BEEN_REGISTERED"}
 	else
 		users[args.name] = true
+		local user_info = {
+			user_name = args.name,
+			player_id = CUR_PLAYER_ID + 1
+		}
+		mongo_manager.save_data("users", { user_name = args.name }, user_info)
+		CUR_PLAYER_ID = CUR_PLAYER_ID + 1
 		return 0, "SCSignup", { ok = 1, name = args.name }
 	end
 end
@@ -57,12 +64,15 @@ end
 
 function auth.load_all_users()
 	log("auth.load_all_users.............")
-	local users_data = mongo_manager.get_all_data("users", {}, {_id = 0, user_name = 1})
+	local users_data = mongo_manager.get_all_data("users", {}, {_id = 0})
 	if users_data then
-		for key, value in ipairs(users_data)
-			do 
-				log("users: " .. value)
-				users[value] = true
+		while users_data:hasNext() do
+			local user_info = users_data:next()
+			utils.print(user_info)
+			users[user_info.user_name] = true
+			if user_info.player_id and user_info.player_id > CUR_PLAYER_ID then
+				CUR_PLAYER_ID = user_info.player_id
+			end
 		end
 	end
 end
